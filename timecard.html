@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>テスト</title>
+    <style>
+        a.test {
+            font-weight: bold;
+        }
+    </style>
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <a href="http://jquery.com/">jQuery</a>
+    <script src="jquery-2.2.2.min.js"></script>
+    <script src="jquery.datetimepicker.min.js"></script>
+
+    <script>
+        $( document).ready(function () {
+            $("a").click(function(event){
+//                alert("Thanks for visiting!");
+                event.preventDefault();
+                $(this).hide("slow");
+            });
+            var curDay = new Date('2016-04-01');
+            var curMonth = curDay.getMonth();
+
+            for (var i=0;i<31;i++){
+                if (curDay.getMonth() != curMonth){ break;}
+                $("#days").append(
+                        $('<tr>').append(
+                                $('<td>').append(curDay.getFullYear() + zeroPadding(curDay.getMonth()+1,2) + zeroPadding(curDay.getDate(),2)),
+                                $('<td>').append(
+                                            $('<input type="text" class="datetimepicker">')),
+                                $('<td>').append(
+                                        $('<input type="text">'))
+                        )
+                );
+                curDay.setDate(curDay.getDate() + 1);
+            }
+            $('#target_ym').change(function(){
+                console.log(this.value);
+            })
+
+            $('.datetimepicker').datetimepicker({
+                format: 'Y-m-d H:i',
+                inline:true,
+                lang:'ja'
+            });
+        });
+
+        var zeroPadding = function (number,length){
+            return (Array(length).join('0') + number).slice(-length);
+        };
+
+        $("a").addClass("test");
+        $('#datetimepicker').datetimepicker();
+
+
+    </script>
+    <div class="table">
+        <tr>
+            <td>対象年月：</td>
+            <td>
+                <select name="target_ym" id="target_ym">
+                    <option value="201603">201603</option>
+                    <option value="201604">201604</option>
+                </select>
+            </td>
+        </tr>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered" id="days">
+            <thead>
+                <tr>
+                    <th>日付</th>
+                    <th>出社</th>
+                    <th>退社</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
